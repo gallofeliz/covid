@@ -1,0 +1,16 @@
+version: '3.5'
+services:
+  app:
+    restart: unless-stopped
+    image: node:alpine
+    volumes:
+      - ./index.js:/app/index.js:ro
+    command: "sh -c 'cd /app; npm i express express-http-proxy ; node /app/index.js'"
+    labels:
+      - "traefik.frontend.rule=Host:xxx"
+      - "traefik.port=8080"
+      - "traefik.docker.network=reverse-proxy"
+
+networks:
+  default:
+      name: reverse-proxy
